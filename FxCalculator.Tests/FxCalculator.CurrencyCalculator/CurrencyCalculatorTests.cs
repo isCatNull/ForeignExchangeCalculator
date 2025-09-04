@@ -1,6 +1,7 @@
 ﻿using FxCalculator.Core.Entities;
 using FxCalculator.Core.Interfaces;
 using FxCalculator.Core.Shared;
+using FxCalculator.UseCases;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -22,20 +23,20 @@ public class CurrencyCalculatorTests
     public void Given_ValidCurrencies_CalculatesCurrencyRate(decimal amount, decimal exchangeRate, decimal expectedResult)
     {
         // Arrange
+        const string fromCurrency = "USD";
         const string toCurrency = "DKK";
-        const decimal validAmount = 100;
         var currencyCalculator = new CurrencyCalculatorService(_mockCurrencyRateProvider);
-        var fromMoney = Money.Create(toCurrency, validAmount);
+        var fromMoney = Money.Create(fromCurrency, amount);
         
         _mockCurrencyRateProvider
-            .GetRate(fromMoney.Value.Currency, toCurrency)
+            .GetRate(fromCurrency, toCurrency)
             .Returns(exchangeRate);
 
         // Act
-        var result = currencyCalculator.Calculate(fromMoney, toCurrency);
+        var result = currencyCalculator.Calculate(fromMoney.Value, toCurrency);
 
         // Assert
-        Assert.That(result.Success, Is.True);
+        Assert.That(result.IsSuccess, Is.True);
         Assert.That(result.Value.Amount, Is.EqualTo(expectedResult));
     }
 
@@ -43,20 +44,43 @@ public class CurrencyCalculatorTests
     public void Given_RateCouldNotBeProvided_ReturnsFailure()
     {
         // Arrange
+        const string fromCurrency = "USD";
         const string toCurrency = "DKK";
         const decimal validAmount = 100;
         var currencyCalculator = new CurrencyCalculatorService(_mockCurrencyRateProvider);
-        var fromMoney = Money.Create(toCurrency, validAmount);
+        var fromMoney = Money.Create(fromCurrency, validAmount);
         
         _mockCurrencyRateProvider
             .GetRate(fromMoney.Value.Currency, toCurrency)
             .Returns((decimal?)null);
 
         // Act
-        var result = currencyCalculator.Calculate(fromMoney, toCurrency);
+        var result = currencyCalculator.Calculate(fromMoney.Value, toCurrency);
 
         // Assert
         Assert.That(result.IsSuccess, Is.False);
-        Assert.That(result.Error, Is.EqualTo(ErrorMessages.ExchangeRateNotFound(fromMoney.Value.Currency, toCurrency)));
+        Assert.That(result.Error, Is.EqualTo(ErrorMessages.ExchangeRateNotFound(fromCurrency, toCurrency)));
+    }
+
+    [Test]
+    public void Given_FromAndToCurrenciesAreTheSame_ReturnsOriginalAmount()
+    {
+        // Arrange
+        const string fromCurrency = "DKK";
+        const string toCurrency = "DKK";
+        const decimal validAmount = 100;
+        var currencyCalculator = new CurrencyCalculatorService(_mockCurrencyRateProvider);
+        var fromMoney = Money.Create(fromCurrency, validAmount);
+        
+        _mockCurrencyRateProvider
+            .GetRate(fromMoney.Value.Currency, toCurrency)
+            .Returns((decimal?)null);
+
+        // Act
+        var result = currencyCalculator.Calculate(fromMoney.Value, toCurrency);
+
+        // Assert
+        Assert.That(result.IsSuccess, Is.True);
+        Assert.That(result.Value.Amount, Is.EqualTo(validAmount));
     }
 }

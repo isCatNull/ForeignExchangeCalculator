@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FxCalculator.Application\FxCalculator.Application.csproj" />
       <ProjectReference Include="..\FxCalculator.Core\FxCalculator.Core.csproj" />
     </ItemGroup>
 

@@ -3,7 +3,7 @@ using FxCalculator.Core.Shared;
 
 namespace FxCalculator.Core.Interfaces;
 
-public interface ICurrencyCalculator
+public interface ICurrencyCalculatorService
 {
     public Result<Money> Calculate(Money from, string toCurrency);
 }

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxCalculator.ConsoleApp", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxCalculator.Core", "FxCalculator.Core\FxCalculator.Core.csproj", "{318DBF39-4240-4FA0-B215-6CE9C548E6B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxCalculator.UseCases", "FxCalculator.UseCases\FxCalculator.UseCases.csproj", "{2F5E0734-7307-4D70-86CE-A2517FEC5AEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxCalculator.Application", "FxCalculator.Application\FxCalculator.Application.csproj", "{2F5E0734-7307-4D70-86CE-A2517FEC5AEC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxCalculator.Infrastructure", "FxCalculator.Infrastructure\FxCalculator.Infrastructure.csproj", "{BEBF538F-A52A-4B3D-9FE7-BEC6837E7651}"
 EndProject
