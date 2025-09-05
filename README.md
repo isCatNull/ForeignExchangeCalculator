@@ -1,7 +1,7 @@
 # ForeignExchangeCalculator
 
 How do I run it?
-Provide args in the following format: <CurrencyExchangeFrom>/<CurrencyExchangeTo> <ammount>
+Provide args in the following format: CurrencyExchangeFrom/CurrencyExchangeTo ammount
 <img width="1230" height="870" alt="image" src="https://github.com/user-attachments/assets/b3d40d35-a54e-4298-86b9-d371bee4096e" />
 <img width="842" height="213" alt="image" src="https://github.com/user-attachments/assets/1779351e-5ff5-41f7-8597-ce378acdf6a1" />
 
