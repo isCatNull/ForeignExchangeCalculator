@@ -26,7 +26,7 @@ public class StaticCurrencyRateProviderTests
         // Assert
         Assert.That(result, Is.Not.Null);
     }
-
+    
     [TestCase(InvalidNonExistentCurrency, ValidEuroCurrency)]
     [TestCase(ValidDanishCurrency, InvalidNonExistentCurrency)]
     [TestCase(InvalidNonExistentCurrency, InvalidNonExistentCurrency)]

@@ -10,7 +10,6 @@ public class MoneyTests
     private const string DefaultCurrencyForTest = "DKK";
     private const decimal DefaultAmountForTest = 100.00M;
     
-    [Theory]
     [TestCase("EUR", 10.00)]
     [TestCase("GBP", 45.00)]
     [TestCase("DKK", 10000)]
@@ -26,7 +25,6 @@ public class MoneyTests
         Assert.That(result.Value.Currency, Is.EqualTo(currency));
     }
     
-    [Theory]
     [TestCase("EUUUU")]
     [TestCase("G")]
     [TestCase("GG")]
@@ -40,7 +38,6 @@ public class MoneyTests
         Assert.That(result.Error, Is.EqualTo(ErrorMessages.InvalidCurrencyCode));
     }
     
-    [Theory]
     [TestCase(-1)]
     [TestCase(-45.00)]
     public void Given_NegativeAmount_FailsToCreateMoney(decimal amount)
@@ -53,7 +50,6 @@ public class MoneyTests
         Assert.That(result.Error, Is.EqualTo(ErrorMessages.NegativeAmount));
     }
     
-    [Theory]
     [TestCase(null)]
     [TestCase("")]
     [TestCase("  ")]
