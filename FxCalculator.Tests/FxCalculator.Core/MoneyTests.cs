@@ -1,4 +1,5 @@
 ﻿using FxCalculator.Core.Entities;
+using FxCalculator.Core.Shared;
 using NUnit.Framework;
 
 namespace FxCalculator.Tests.FxCalculator.Core;
@@ -29,13 +30,14 @@ public class MoneyTests
     [TestCase("EUUUU")]
     [TestCase("G")]
     [TestCase("GG")]
-    public void Given_ValidInvalidCurrency_FailsToCreateMoney(string currency)
+    public void Given_InvalidCurrency_FailsToCreateMoney(string currency)
     {
         // Arrange & Act
         var result = Money.Create(currency, DefaultAmountForTest);
 
         // Assert
         Assert.That(result.IsSuccess, Is.False);
+        Assert.That(result.Error, Is.EqualTo(ErrorMessages.InvalidCurrencyCode));
     }
     
     [Theory]
@@ -48,6 +50,7 @@ public class MoneyTests
 
         // Assert
         Assert.That(result.IsSuccess, Is.False);
+        Assert.That(result.Error, Is.EqualTo(ErrorMessages.NegativeAmount));
     }
     
     [Theory]
@@ -61,5 +64,6 @@ public class MoneyTests
 
         // Assert
         Assert.That(result.IsSuccess, Is.False);
+        Assert.That(result.Error, Is.EqualTo(ErrorMessages.EmptyCurrency));
     }
 }

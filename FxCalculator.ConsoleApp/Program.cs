@@ -10,10 +10,10 @@ class Program
 {
     static int Main(string[] args)
     {
-        Console.WriteLine("Exchange <currency pair> <amount to exchange>");
-        if (args.Length == 0)
+        PrintToConsole("Exchange <currency pair> <amount to exchange>");
+        if (args.Length != 3)
         {
-            Console.WriteLine("No arguments are provided");
+            PrintToConsole("Incorrect number of arguments provided. Expected: <currency pair> <amount to exchange>");
             return 1;
         }
         var input = args[0];

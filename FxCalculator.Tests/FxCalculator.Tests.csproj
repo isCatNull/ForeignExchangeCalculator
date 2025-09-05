@@ -19,8 +19,4 @@
       <ProjectReference Include="..\FxCalculator.Infrastructure\FxCalculator.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="IntegrationTests\" />
-    </ItemGroup>
-
 </Project>

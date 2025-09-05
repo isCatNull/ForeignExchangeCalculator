@@ -4,7 +4,8 @@ namespace FxCalculator.Infrastructure;
 
 public class StaticCurrencyRateProvider : ICurrencyRateProvider
 {
-    private readonly decimal _basePerDkk = 100m;
+    private const decimal BasePerDkk = 100m;
+
     private readonly Dictionary<string, decimal> _rates = new()
     {
         { "DKK", 100m },
@@ -27,7 +28,7 @@ public class StaticCurrencyRateProvider : ICurrencyRateProvider
         
         if (fromCurrency == toCurrency) return 1m;
 
-        var rate = (fromRate / _basePerDkk) / (toRate / _basePerDkk);
+        var rate = (fromRate / BasePerDkk) / (toRate / BasePerDkk);
 
         return rate;
     }

@@ -9,28 +9,8 @@ namespace FxCalculator.Tests.FxCalculator.CurrencyCalculator;
 public class CurrencyCalculatorTests
 {
     private CurrencyCalculatorService _sut;
-
-    [SetUp]
-    public void Setup()
-    {
-        _sut = new CurrencyCalculatorService(new StaticCurrencyRateProvider());
-    }
-    
-    [TestCaseSource(nameof(TestCases))]
-    public void Given_CurrenciesToExchange_ReturnsCorrectAmount(string fromCurrency, string toCurrency,
-        decimal amountToExchange, decimal expectedExchangedAmount)
-    {
-        // Arrange & Act
-        var result = _sut.ExchangeCurrency(new Money(amountToExchange, fromCurrency), toCurrency);
-
-        // Assert
-        Assert.That(result.IsSuccess, Is.True);
-        Assert.That(result.Value.Amount, Is.EqualTo(expectedExchangedAmount));
-        Assert.That(result.Value.Currency, Is.EqualTo(toCurrency));
-    }
-    
-    public static object[] TestCases =
-    {
+    private static object[] _testCases =
+    [
         new object[] { "DKK", "DKK", 45m, 45m },
         new object[] { "EUR", "EUR", 1.56m, 1.56m },
         new object[] { "USD", "USD", 167m, 167m },
@@ -45,5 +25,24 @@ public class CurrencyCalculatorTests
         new object[] { "EUR", "GBP", 1m, 0.8723m },
         new object[] { "EUR", "USD", 1m, 1.1219m },
         new object[] { "EUR", "USD", 0m, 0m }
-    };
+    ];
+
+    [SetUp]
+    public void Setup()
+    {
+        _sut = new CurrencyCalculatorService(new StaticCurrencyRateProvider());
+    }
+    
+    [TestCaseSource(nameof(_testCases))]
+    public void Given_CurrenciesToExchange_ReturnsCorrectAmount(string fromCurrency, string toCurrency,
+        decimal amountToExchange, decimal expectedExchangedAmount)
+    {
+        // Arrange & Act
+        var result = _sut.ExchangeCurrency(new Money(amountToExchange, fromCurrency), toCurrency);
+
+        // Assert
+        Assert.That(result.IsSuccess, Is.True);
+        Assert.That(result.Value.Amount, Is.EqualTo(expectedExchangedAmount));
+        Assert.That(result.Value.Currency, Is.EqualTo(toCurrency));
+    }
 }
