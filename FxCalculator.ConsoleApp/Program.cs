@@ -11,7 +11,7 @@ class Program
     static int Main(string[] args)
     {
         PrintToConsole("Exchange <currency pair> <amount to exchange>");
-        if (args.Length != 3)
+        if (args.Length != 2)
         {
             PrintToConsole("Incorrect number of arguments provided. Expected: <currency pair> <amount to exchange>");
             return 1;
