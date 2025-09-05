@@ -5,5 +5,5 @@ namespace FxCalculator.Core.Interfaces;
 
 public interface ICurrencyCalculatorService
 {
-    public Result<Money> Calculate(Money from, string toCurrency);
+    public Result<Money> ExchangeCurrency(Money from, string toCurrency);
 }

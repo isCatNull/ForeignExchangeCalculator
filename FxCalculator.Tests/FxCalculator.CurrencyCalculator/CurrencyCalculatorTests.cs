@@ -21,7 +21,7 @@ public class CurrencyCalculatorTests
         decimal amountToExchange, decimal expectedExchangedAmount)
     {
         // Arrange & Act
-        var result = _sut.Calculate(new Money(amountToExchange, fromCurrency), toCurrency);
+        var result = _sut.ExchangeCurrency(new Money(amountToExchange, fromCurrency), toCurrency);
 
         // Assert
         Assert.That(result.IsSuccess, Is.True);

@@ -6,7 +6,7 @@ namespace FxCalculator.Application;
 
 public class CurrencyCalculatorService(ICurrencyRateProvider currencyRateProvider) : ICurrencyCalculatorService
 {
-    public Result<Money> Calculate(Money from, string toCurrency)
+    public Result<Money> ExchangeCurrency(Money from, string toCurrency)
     {
         var exchangeRate = currencyRateProvider.GetRate(from.Currency, toCurrency);
         
