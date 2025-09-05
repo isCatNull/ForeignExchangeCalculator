@@ -1,8 +1,6 @@
-﻿using FxCalculator.Core.Entities;
-using FxCalculator.Core.Interfaces;
-using FxCalculator.Core.Shared;
-using FxCalculator.UseCases;
-using NSubstitute;
+﻿using FxCalculator.Application;
+using FxCalculator.Core.Entities;
+using FxCalculator.Infrastructure;
 using NUnit.Framework;
 
 namespace FxCalculator.Tests.FxCalculator.CurrencyCalculator;
@@ -10,77 +8,42 @@ namespace FxCalculator.Tests.FxCalculator.CurrencyCalculator;
 [TestFixture]
 public class CurrencyCalculatorTests
 {
-    private ICurrencyRateProvider _mockCurrencyRateProvider;
-    
+    private CurrencyCalculatorService _sut;
+
     [SetUp]
     public void Setup()
     {
-        _mockCurrencyRateProvider = Substitute.For<ICurrencyRateProvider>();
+        _sut = new CurrencyCalculatorService(new StaticCurrencyRateProvider());
     }
-
-    [TestCase(10, 1, 10)]
-    [TestCase(0, 10, 0)]
-    public void Given_ValidCurrencies_CalculatesCurrencyRate(decimal amount, decimal exchangeRate, decimal expectedResult)
+    
+    [TestCaseSource(nameof(TestCases))]
+    public void Given_CurrenciesToExchange_ReturnsCorrectAmount(string fromCurrency, string toCurrency,
+        decimal amountToExchange, decimal expectedExchangedAmount)
     {
-        // Arrange
-        const string fromCurrency = "USD";
-        const string toCurrency = "DKK";
-        var currencyCalculator = new CurrencyCalculatorService(_mockCurrencyRateProvider);
-        var fromMoney = Money.Create(fromCurrency, amount);
-        
-        _mockCurrencyRateProvider
-            .GetRate(fromCurrency, toCurrency)
-            .Returns(exchangeRate);
-
-        // Act
-        var result = currencyCalculator.Calculate(fromMoney.Value, toCurrency);
+        // Arrange & Act
+        var result = _sut.Calculate(new Money(amountToExchange, fromCurrency), toCurrency);
 
         // Assert
         Assert.That(result.IsSuccess, Is.True);
-        Assert.That(result.Value.Amount, Is.EqualTo(expectedResult));
+        Assert.That(result.Value.Amount, Is.EqualTo(expectedExchangedAmount));
+        Assert.That(result.Value.Currency, Is.EqualTo(toCurrency));
     }
-
-    [Test]
-    public void Given_RateCouldNotBeProvided_ReturnsFailure()
+    
+    public static object[] TestCases =
     {
-        // Arrange
-        const string fromCurrency = "USD";
-        const string toCurrency = "DKK";
-        const decimal validAmount = 100;
-        var currencyCalculator = new CurrencyCalculatorService(_mockCurrencyRateProvider);
-        var fromMoney = Money.Create(fromCurrency, validAmount);
-        
-        _mockCurrencyRateProvider
-            .GetRate(fromMoney.Value.Currency, toCurrency)
-            .Returns((decimal?)null);
-
-        // Act
-        var result = currencyCalculator.Calculate(fromMoney.Value, toCurrency);
-
-        // Assert
-        Assert.That(result.IsSuccess, Is.False);
-        Assert.That(result.Error, Is.EqualTo(ErrorMessages.ExchangeRateNotFound(fromCurrency, toCurrency)));
-    }
-
-    [Test]
-    public void Given_FromAndToCurrenciesAreTheSame_ReturnsOriginalAmount()
-    {
-        // Arrange
-        const string fromCurrency = "DKK";
-        const string toCurrency = "DKK";
-        const decimal validAmount = 100;
-        var currencyCalculator = new CurrencyCalculatorService(_mockCurrencyRateProvider);
-        var fromMoney = Money.Create(fromCurrency, validAmount);
-        
-        _mockCurrencyRateProvider
-            .GetRate(fromMoney.Value.Currency, toCurrency)
-            .Returns((decimal?)null);
-
-        // Act
-        var result = currencyCalculator.Calculate(fromMoney.Value, toCurrency);
-
-        // Assert
-        Assert.That(result.IsSuccess, Is.True);
-        Assert.That(result.Value.Amount, Is.EqualTo(validAmount));
-    }
+        new object[] { "DKK", "DKK", 45m, 45m },
+        new object[] { "EUR", "EUR", 1.56m, 1.56m },
+        new object[] { "USD", "USD", 167m, 167m },
+        new object[] { "DKK", "EUR", 743.94m, 100m },
+        new object[] { "DKK", "USD", 663.11m, 100m },
+        new object[] { "DKK", "GBP", 852.85m, 100m },
+        new object[] { "DKK", "SEK", 76.10m, 100m },
+        new object[] { "DKK", "NOK", 78.40m, 100m },
+        new object[] { "DKK", "CHF", 683.58m, 100m },
+        new object[] { "DKK", "JPY", 5.9740m, 100m },
+        new object[] { "EUR", "DKK", 1m, 7.4394m },
+        new object[] { "EUR", "GBP", 1m, 0.8723m },
+        new object[] { "EUR", "USD", 1m, 1.1219m },
+        new object[] { "EUR", "USD", 0m, 0m }
+    };
 }

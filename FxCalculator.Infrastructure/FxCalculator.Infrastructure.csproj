@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FxCalculator.Core\FxCalculator.Core.csproj" />
+    </ItemGroup>
+
 </Project>

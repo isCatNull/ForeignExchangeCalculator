@@ -1,6 +1,6 @@
 ﻿namespace FxCalculator.Core.Shared;
 
-public class ErrorMessages
+public static class ErrorMessages
 {
     public const string NegativeAmount = "Amount cannot be negative.";
     public const string EmptyCurrency = "Currency cannot be empty.";

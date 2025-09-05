@@ -10,11 +10,17 @@
       <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
       <PackageReference Include="NSubstitute" Version="5.3.0" />
       <PackageReference Include="NUnit" Version="4.4.0" />
+      <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\FxCalculator.Application\FxCalculator.Application.csproj" />
       <ProjectReference Include="..\FxCalculator.Core\FxCalculator.Core.csproj" />
+      <ProjectReference Include="..\FxCalculator.Infrastructure\FxCalculator.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="IntegrationTests\" />
     </ItemGroup>
 
 </Project>

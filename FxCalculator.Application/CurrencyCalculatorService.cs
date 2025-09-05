@@ -2,22 +2,20 @@
 using FxCalculator.Core.Interfaces;
 using FxCalculator.Core.Shared;
 
-namespace FxCalculator.UseCases;
+namespace FxCalculator.Application;
 
 public class CurrencyCalculatorService(ICurrencyRateProvider currencyRateProvider) : ICurrencyCalculatorService
 {
     public Result<Money> Calculate(Money from, string toCurrency)
     {
-        if (from.Currency.Equals(toCurrency, StringComparison.OrdinalIgnoreCase))
-            return Result<Money>.Success(from);
-        
         var exchangeRate = currencyRateProvider.GetRate(from.Currency, toCurrency);
         
         if(exchangeRate == null)
             return Result<Money>.Failure(ErrorMessages.ExchangeRateNotFound(from.Currency, toCurrency));
 
-        var calculatedMoney = from.Amount * exchangeRate.Value;
+        var converted = from.Amount * exchangeRate.Value;
         
-        return Result<Money>.Success(new Money(calculatedMoney, toCurrency));
+        return Result<Money>
+            .Success(new Money(Math.Round(converted, 4, MidpointRounding.AwayFromZero), toCurrency));
     }
 }

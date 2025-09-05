@@ -4,7 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>FxCalculator.UseCases</RootNamespace>
+        <RootNamespace>FxCalculator.Application</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
